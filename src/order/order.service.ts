@@ -3,7 +3,6 @@ import { OrderDTO } from './dto/order.dto';
 import { PrismaService } from './../prisma.service';
 import { Order, Prisma } from '@prisma/client';
 import { ProducerService } from 'src/kafka/producer.service';
-import { stringify } from 'querystring';
 @Injectable()
 export class OrderService {
     constructor(private prisma: PrismaService,
