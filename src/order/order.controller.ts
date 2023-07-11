@@ -1,13 +1,14 @@
 import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { OrderDTO } from './dto/order.dto';
+import { ProducerService } from 'src/kafka/producer.service';
 
 @Controller('order')
 export class OrderController {
     constructor(private readonly orderService: OrderService) { }
 
     @Get()
-    getHello(): string {
+    getHello() {
         return this.orderService.getHello();
     }
 
