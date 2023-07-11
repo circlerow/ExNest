@@ -17,4 +17,5 @@ model Order {
   name      String
   status    String
   userID    Int
+  email     String
 }

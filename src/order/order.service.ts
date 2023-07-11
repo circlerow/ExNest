@@ -10,13 +10,16 @@ export class OrderService {
     }
 
     async create(orderDto: OrderDTO): Promise<Order> {
-        return this.prisma.order.create({
+        const order = await this.prisma.order.create({
             data: {
                 name: orderDto.name,
                 userID: orderDto.userID,
+                email: orderDto.email,
                 status: 'Created',
-            }
+            },
         });
+        console.log(order);
+        return order;
     }
 
     async changeStatus(orderID: number): Promise<Order> {

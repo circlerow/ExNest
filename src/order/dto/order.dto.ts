@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator"
+import { IsEmail, IsNotEmpty, IsNumber, IsString } from "class-validator"
 
 export class OrderDTO {
     @IsString()
@@ -7,4 +7,8 @@ export class OrderDTO {
 
     @IsNumber()
     userID: number;
+
+    @IsEmail()
+    @IsNotEmpty()
+    email: string;
 }
