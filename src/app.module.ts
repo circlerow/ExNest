@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { OrderModule } from './order/order.module';
 import { PayModule } from './pay/pay.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DatabaseService } from './database.service';
+import { PrismaService } from './prisma.service';
 
 @Module({
   imports: [
@@ -19,6 +19,6 @@ import { DatabaseService } from './database.service';
     }),
     OrderModule, PayModule],
   controllers: [AppController],
-  providers: [AppService, DatabaseService],
+  providers: [AppService, PrismaService],
 })
 export class AppModule { }
