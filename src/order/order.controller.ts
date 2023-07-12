@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { OrderDTO } from './dto/order.dto';
-import { ProducerService } from 'src/kafka/producer.service';
+import { EventPattern } from '@nestjs/microservices';
 
 @Controller('order')
 export class OrderController {
@@ -11,6 +11,13 @@ export class OrderController {
     getHello() {
         return this.orderService.getHello();
     }
+    @EventPattern('pay')
+    handleOrderCreated(data: any) {
+        console.log(data);
+        this.orderService.changeStatusOrder(data.id, data.status);
+    }
+
+
 
     @Post('create')
     create(@Body() orderDto: OrderDTO) {

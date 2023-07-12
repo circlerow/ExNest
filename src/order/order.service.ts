@@ -1,34 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { OrderDTO } from './dto/order.dto';
 import { PrismaService } from './../prisma.service';
 import { Order, Prisma } from '@prisma/client';
-import { ProducerService } from 'src/kafka/producer.service';
+import { ClientKafka } from '@nestjs/microservices';
+import { OrderCreatedEvent } from './order-created.event';
 @Injectable()
 export class OrderService {
     constructor(private prisma: PrismaService,
-        private readonly producerService: ProducerService) { }
+        @Inject('ORDER_SERVICE') private readonly orderClient: ClientKafka) { }
 
     async getHello() {
         console.log('getHello');
-        await this.producerService.produce({
-            topic: 'test',
-            messages: [
-                { value: 'Hello Hello' },
-            ],
-        });
         return 'Success';
     }
 
     async create(orderDto: OrderDTO): Promise<Order> {
-
-        await this.producerService.produce({
-            topic: 'order',
-            messages: [
-                { key: 'name', value: orderDto.name },
-                { key: 'email', value: orderDto.email },
-                { key: 'userID', value: orderDto.userID.toString() }
-            ],
-        });
 
         const order = await this.prisma.order.create({
             data: {
@@ -39,6 +25,10 @@ export class OrderService {
             },
         });
 
+        this.orderClient.emit(
+            'order',
+            new OrderCreatedEvent(order.id, orderDto.name, orderDto.userID, orderDto.email),
+        );
         return order;
     }
 
@@ -46,6 +36,13 @@ export class OrderService {
         return this.prisma.order.update({
             where: { id: orderID },
             data: { status: 'Cancelled' },
+        });
+    }
+    async changeStatusOrder(orderID: number, status: string): Promise<Order> {
+        console.log("change!!");
+        return this.prisma.order.update({
+            where: { id: orderID },
+            data: { status: status },
         });
     }
 

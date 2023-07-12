@@ -10,7 +10,7 @@ export class SchedulingService {
     ) { }
 
     private readonly logger = new Logger(SchedulingService.name)
-    @Cron('* 30 * * * *')
+    @Cron('0 30 * * * *')
     handleCron() {
         this.logger.debug('Called when the current minute is 30');
         return this.oderService.countElementsByStatus();

@@ -2,12 +2,18 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { OrderModule } from './order/order.module';
-import { PayModule } from './pay/pay.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PrismaService } from './prisma.service';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
+    BullModule.forRoot({
+      redis: {
+        host: 'localhost',
+        port: 6379,
+      },
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost', // hoặc địa chỉ IP của PostgreSQL container
@@ -17,7 +23,7 @@ import { PrismaService } from './prisma.service';
       autoLoadEntities: true,
       synchronize: true,
     }),
-    OrderModule, PayModule],
+    OrderModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })

@@ -4,11 +4,26 @@ import { OrderService } from './order.service';
 import { PrismaService } from 'src/prisma.service';
 import { SchedulingService } from './scheduling.service';
 import { ScheduleModule } from '@nestjs/schedule';
-import { Kafka } from 'kafkajs';
-import { KafkaModule } from 'src/kafka/kafka.module';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
-    imports: [ScheduleModule.forRoot(), KafkaModule],
+    imports: [ClientsModule.register([
+        {
+            name: 'ORDER_SERVICE',
+            transport: Transport.KAFKA,
+            options: {
+                client: {
+                    clientId: 'order',
+                    brokers: ['localhost:9092'],
+                },
+                consumer: {
+                    groupId: 'pay-consumer',
+                },
+            },
+        },
+    ]),
+    ScheduleModule.forRoot()
+    ],
     controllers: [OrderController],
     providers: [OrderService, PrismaService, SchedulingService],
 })
