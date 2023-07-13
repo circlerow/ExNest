@@ -1,14 +1,25 @@
+import { MailerService } from '@nestjs-modules/mailer';
 import { Process, Processor } from '@nestjs/bull';
 import { Logger } from '@nestjs/common';
 import { Job } from 'bull';
 
-@Processor('audio')
+@Processor('mail')
 export class MailProcessor {
+    constructor(private readonly mailerService: MailerService) { }
     private readonly logger = new Logger(MailProcessor.name);
-    @Process('transcode')
-    handleTranscode(job: Job): void {
-        this.logger.debug('Start transcoding...');
-        this.logger.debug(job.data);
-        this.logger.debug('Transcoding completed');
+    @Process('sendmail')
+    sendMail(job: Job<{ email: string, status: string }>) {
+        this.mailerService.sendMail({
+            to: `${job.data.email}`,
+            from: 'noreply@gmail.com',
+            subject: 'Notification',
+            text: `Your order is ${job.data.status}`,
+        }).then((res) => {
+            console.log(res);
+        }
+        ).catch((err) => {
+            console.log(err);
+        }
+        );
     }
 }

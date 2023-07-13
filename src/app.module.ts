@@ -5,6 +5,8 @@ import { OrderModule } from './order/order.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PrismaService } from './prisma.service';
 import { BullModule } from '@nestjs/bull';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -23,7 +25,7 @@ import { BullModule } from '@nestjs/bull';
       autoLoadEntities: true,
       synchronize: true,
     }),
-    OrderModule],
+    OrderModule, MailModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })

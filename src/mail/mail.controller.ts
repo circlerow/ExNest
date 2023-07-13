@@ -1,15 +1,18 @@
 import { InjectQueue } from '@nestjs/bull';
-import { Controller, Post } from '@nestjs/common';
+import { Controller, Get, Post } from '@nestjs/common';
 import { Queue } from 'bull';
 
-@Controller('audio')
+@Controller('mail')
 export class MailController {
-    constructor(@InjectQueue('audio') private readonly audioQueue: Queue) { }
+    constructor(@InjectQueue('mail') private readonly mailQueue: Queue) { }
 
-    @Post('transcode')
+
+    @Post('sendmail')
     async transcode() {
-        await this.audioQueue.add('transcode', {
-            file: 'audio.mp3',
+        console.log('sendmail');
+        await this.mailQueue.add('sendmail', {
+            email: 'a@gmail.com',
+            status: 'a',
         });
     }
 }
