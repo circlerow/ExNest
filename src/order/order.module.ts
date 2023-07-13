@@ -5,6 +5,9 @@ import { PrismaService } from 'src/prisma.service';
 import { SchedulingService } from './scheduling.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { MailProcessor } from 'src/mail/mail.processor';
+import { MailModule } from 'src/mail/mail.module';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
     imports: [ClientsModule.register([
@@ -22,7 +25,10 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
             },
         },
     ]),
-    ScheduleModule.forRoot()
+    ScheduleModule.forRoot(),
+        MailModule, BullModule.registerQueue({
+            name: 'mail',
+        })
     ],
     controllers: [OrderController],
     providers: [OrderService, PrismaService, SchedulingService],

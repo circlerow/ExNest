@@ -1,12 +1,10 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Process, Processor } from '@nestjs/bull';
-import { Logger } from '@nestjs/common';
 import { Job } from 'bull';
 
 @Processor('mail')
 export class MailProcessor {
     constructor(private readonly mailerService: MailerService) { }
-    private readonly logger = new Logger(MailProcessor.name);
     @Process('sendmail')
     sendMail(job: Job<{ email: string, status: string }>) {
         this.mailerService.sendMail({
