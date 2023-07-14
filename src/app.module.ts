@@ -5,7 +5,6 @@ import { OrderModule } from './order/order.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PrismaService } from './prisma.service';
 import { BullModule } from '@nestjs/bull';
-import { MailerModule } from '@nestjs-modules/mailer';
 import { MailModule } from './mail/mail.module';
 
 @Module({

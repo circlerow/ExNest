@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { OrderDTO } from './dto/order.dto';
 import { PrismaService } from './../prisma.service';
-import { Order, Prisma } from '@prisma/client';
+import { Order } from '@prisma/client';
 import { ClientKafka } from '@nestjs/microservices';
 import { OrderCreatedEvent } from './order-created.event';
 import { InjectQueue } from '@nestjs/bull';
@@ -54,7 +54,6 @@ export class OrderService {
         });
     }
     async changeStatusOrder(orderID: number, status: string): Promise<Order> {
-        console.log("change!!");
         const user = await this.prisma.order.findUnique({
             where: { id: orderID },
         })

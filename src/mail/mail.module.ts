@@ -1,6 +1,5 @@
 import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
-import { MailController } from './mail.controller';
 import { MailProcessor } from './mail.processor';
 import { MailerModule } from '@nestjs-modules/mailer';
 
@@ -21,7 +20,6 @@ import { MailerModule } from '@nestjs-modules/mailer';
         }),
 
     ],
-    controllers: [MailController],
     providers: [MailProcessor],
     exports: [MailProcessor],
 })

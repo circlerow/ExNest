@@ -5,7 +5,6 @@ import { PrismaService } from 'src/prisma.service';
 import { SchedulingService } from './scheduling.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { MailProcessor } from 'src/mail/mail.processor';
 import { MailModule } from 'src/mail/mail.module';
 import { BullModule } from '@nestjs/bull';
 
